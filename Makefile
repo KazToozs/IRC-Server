@@ -3,7 +3,9 @@ CC	=	gcc
 
 RM	=	rm -f
 
-SRCSER	=	
+SRCSER	=	src/server/server.c		\
+		src/server/get_next_line.c	\
+		src/server/main.c
 
 SRCCLI	=	
 
@@ -15,18 +17,16 @@ SER	=	server
 
 CLI	=	client
 
-CFLAGS	=	-W -Wall -Wextra
-
-INC	=	-I./include
+CFLAGS	=	-W -Wall -Wextra -I./include
 
 
 all:	$(SER) $(CLI)
 
 $(SER):	$(OBJSER)
-	$(CC) -o $(SER) $(SRCSER) $(CFLAGS) $(INC)
+	$(CC) -o $(SER) $(OBJSER) $(CFLAGS)
 
-$(SER):	$(OBJCLI)
-	$(CC) -o $(CLI) $(SRCCLI) $(CFLAGS) $(INC)
+$(CLI):	$(OBJCLI)
+	$(CC) -o $(CLI) $(OBJCLI) $(CFLAGS)
 
 clean:
 	$(RM) $(OBJSER)

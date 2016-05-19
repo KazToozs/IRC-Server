@@ -5,12 +5,13 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 16 11:37:29 2016 toozs-_c
-** Last update Mon May 16 11:37:52 2016 toozs-_c
+** Last update Wed May 18 17:38:45 2016 toozs-_c
 */
 
-#define _IRC_H_
 #ifndef _IRC_H_
+#define _IRC_H_
 
+int		run_server(int port);
+char		*get_next_line(int fd);
 
-
-#endif
+#endif /* !_IRC_H_ */
