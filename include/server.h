@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 16 11:35:09 2016 toozs-_c
-** Last update Thu May 26 20:27:01 2016 toozs-_c
+** Last update Fri May 27 11:48:01 2016 toozs-_c
 */
 
 #ifndef __SERV_H_
@@ -33,7 +33,8 @@ typedef struct  s_com
 
 int			list_push_back(t_client **list, int fd);
 void			list_remove_node(t_client **head, t_client **node);
-int			read_input(char *buff, t_client *params);
+int			read_input(char *buff, t_client *params,
+				   t_client *clients);
 char			**my_str_tab(char *str);
 void			free_tab(char** tab);
 void			handle_clients(int sock_fd, struct timeval *tv,

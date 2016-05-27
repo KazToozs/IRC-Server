@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Thu May 26 19:02:27 2016 toozs-_c
-** Last update Thu May 26 20:37:18 2016 toozs-_c
+** Last update Fri May 27 11:50:32 2016 toozs-_c
 */
 
 #include <strings.h>
@@ -26,13 +26,13 @@ t_client		*find_commands(char *buff, t_client *tmp,
   new = buff;
   while (buff[n] != '\0' && br == 0)
     {
-      if (buff[n] == '\r')
+      if (buff[n] == '\n')
 	{
 	  buff[n] = 0;
 	  n++;
-	  if (buff[n] == '\n')
-	    n++;
-	  if (read_input(new, tmp) == 3)
+	  /* if (buff[n] == '\n') */
+	  /*   n++; */
+	  if (read_input(new, tmp, *clients) == 3)
 	    {
 	      list_remove_node(clients, &tmp);
 	      br = 1;
@@ -93,6 +93,20 @@ int			set_clients(fd_set *readfds, t_client *list)
   return (highest);
 }
 
+void			count_list(t_client *clients)
+{
+  int			count;
+  /* delete this function */
+
+  count = 0;
+  while (clients != NULL)
+    {
+      count++;
+      clients = clients->next;
+    }
+  printf("list count: %d\n", count);
+}
+
 void			handle_clients(int sock_fd, struct timeval *tv,
 				       t_client **clients)
 {
@@ -115,6 +129,7 @@ void			handle_clients(int sock_fd, struct timeval *tv,
 				  &s_in_size)) != -1)
 	    {
 	      list_push_back(clients, client_fd);
+	      count_list(*clients);
 	      printf("added a client\n");
 	    }
 	}

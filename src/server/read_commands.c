@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 14:57:26 2016 toozs-_c
-** Last update Thu May 26 20:28:25 2016 toozs-_c
+** Last update Fri May 27 11:46:57 2016 toozs-_c
 */
 
 #include <string.h>
@@ -37,6 +37,8 @@ int		check_commands(t_client *params, char **tab)
     i++;
   if (g_coms[i].command != NULL)
     ret = g_coms[i].ptr(params, tab);
+  else
+    return (1);
   /* if (ret == 1) */
   /*   send_message(); */
   if (ret == 3)
@@ -44,15 +46,30 @@ int		check_commands(t_client *params, char **tab)
   return (0);
 }
 
-int		read_input(char *buff, t_client *params)
+void		send_message(char *buff, t_client *param, t_client *clients)
+{
+  while (clients != NULL)
+    {
+      if (clients != param)
+      write(clients->fd, buff, strlen(buff));
+      clients = clients->next;
+    }
+}
+
+int		read_input(char *buff, t_client *params, t_client *clients)
 {
   char		**tab;
+  int		ret;
 
   printf("STR: [%s]\n", buff);
   tab = my_str_tab(buff);
   if (tab && tab[0])
     {
-      return (check_commands(params, tab));
+      printf("here\n");
+      if ((ret = check_commands(params, tab)) != 1)
+	return (ret);
+      else
+	send_message(buff, params, clients);
     }
   free_tab(tab);
   return (0);

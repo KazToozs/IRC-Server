@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 17:43:24 2016 toozs-_c
-** Last update Thu May 26 13:18:41 2016 toozs-_c
+** Last update Fri May 27 17:02:36 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -30,11 +30,12 @@ int		_user(t_client *client, char **tab)
       while (tab[i])
 	i++;
       if (i < 4)
-	dprintf(client->fd, "462 Too few parameters\r\n");
+	dprintf(client->fd, "461 Too few parameters\r\n");
       else
 	{
 	  printf("name: %s\n", client->name);
-	  dprintf(client->fd, ":127.0.0.1 001 %s :Welcome\r\n", client->name);
+	  client->registered = 1;
+	  dprintf(client->fd, "001 Welcome\r\n");
 	}
     }
   else
