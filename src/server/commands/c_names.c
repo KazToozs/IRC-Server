@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:26:46 2016 toozs-_c
-** Last update Fri May 27 16:40:29 2016 toozs-_c
+** Last update Sat May 28 17:56:54 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -15,17 +15,17 @@
 ** NAMES {<channel>, {<channel>}}
 **
 ** ----- CODES -----
-** -> RPL_NAMREPLY
-** -> RPL_ENDOFNAMES
+** -> 353 RPL_NAMREPLY: a name or channel
+** -> 366 RPL_ENDOFNAMES: end of the list
 */
 
-int		_names(t_client *client, char **tab)
+int		_names(t_client *cl, char **tab, t_client *clients)
 {
   int		i;
 
   printf("names command\n");
   i = 1;
-  if (client->registered)
+  if (cl->registered)
     {
       while (tab[i])
 	i++;

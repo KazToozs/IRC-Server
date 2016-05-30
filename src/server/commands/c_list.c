@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:26:10 2016 toozs-_c
-** Last update Fri May 27 16:21:14 2016 toozs-_c
+** Last update Sat May 28 17:55:40 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -15,18 +15,18 @@
 **
 ** ---- CODES -----
 ** ERR_NOSUCHSERVER
-** -> RPL_LIST
-** -> RPL_LISTSTART
-** -> RPL_LISTEND
+** -> 322 RPL_LIST: <channel name> <#visible channels> :<topic of channel>
+** -> 321 RPL_LISTSTART: "Channel :User Name"
+** -> 323 RPL_LISTEND: ":End of /LIST"
 */
 
-int		_list(t_client *client, char **tab)
+int		_list(t_client *cl, char **tab, t_client *clients)
 {
   int		i;
 
   printf("list command\n");
   i = 1;
-  if (client->registered)
+  if (cl->registered)
     {
       while (tab[i])
 	i++;

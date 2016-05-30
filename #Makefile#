@@ -3,11 +3,7 @@ CC	=	gcc
 
 RM	=	rm -f
 
-SRCSER	=	src/server/server.c		\
-		src/server/get_next_line.c	\
-		src/server/read_commands.c	\
-		src/server/list.c		\
-		src/server/channels.c		\
+.c		\
 		src/server/my.c			\
 		src/server/my_str_tab.c		\
 		src/server/handle_clients.c	\

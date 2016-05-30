@@ -5,26 +5,23 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Thu May 19 18:06:47 2016 toozs-_c
-** Last update Sat May 28 21:46:31 2016 toozs-_c
+** Last update Sat May 28 18:23:23 2016 toozs-_c
 */
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "server.h"
 
-int		list_push_back(t_client **list, int fd)
+int		ch_push_back(t_channel **list, char *name)
 {
-  t_client	*block;
-  t_client	*tmp;
+  t_channel	*block;
+  t_channel	*tmp;
 
   if ((block = malloc(sizeof(*block))) == NULL)
     return (1);
   block->next = NULL;
-  block->fd = fd;
-  block->registered = 0;
-  block->name = NULL;
-  block->channels = NULL;
-  /* ch_push_back(&block->channels, "#default"); */
+  block->name = strdup(name);
   if ((*list) == NULL)
     {
       block->prev = NULL;
@@ -42,9 +39,9 @@ int		list_push_back(t_client **list, int fd)
   return (0);
 }
 
-void			list_remove_node(t_client **head, t_client **node)
+void			ch_remove_node_ch(t_channel **head, t_channel **node)
 {
-  t_client		*tmp;
+  t_channel		*tmp;
 
   tmp = (*node);
   if ((*node)->prev != NULL)
@@ -54,6 +51,7 @@ void			list_remove_node(t_client **head, t_client **node)
   if ((*node)->prev == NULL)
     (*head) = (*head)->next;
   (*node) = (*head);
-  close(tmp->fd);
+  if (tmp->name)
+    free(tmp->name);
   free(tmp);
 }

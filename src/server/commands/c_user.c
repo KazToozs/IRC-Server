@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 17:43:24 2016 toozs-_c
-** Last update Fri May 27 17:02:36 2016 toozs-_c
+** Last update Sat May 28 17:59:18 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -19,26 +19,26 @@
 ** -> 462 ERR_ALREADYREGISTERED: already logged in?
 */
 
-int		_user(t_client *client, char **tab)
+int		_user(t_client *cl, char **tab, t_client *clients)
 {
   int		i;
   printf("User command\n");
 
   i = 1;
-  if (!client->registered && client->name)
+  if (!cl->registered && cl->name)
     {
       while (tab[i])
 	i++;
       if (i < 4)
-	dprintf(client->fd, "461 Too few parameters\r\n");
+	dprintf(cl->fd, "461 Too few parameters\r\n");
       else
 	{
-	  printf("name: %s\n", client->name);
-	  client->registered = 1;
-	  dprintf(client->fd, "001 Welcome\r\n");
+	  printf("name: %s\n", cl->name);
+	  cl->registered = 1;
+	  dprintf(cl->fd, "001 Welcome\r\n");
 	}
     }
   else
-    dprintf(client->fd, "462 Already registered\r\n");
+    dprintf(cl->fd, "462 Already registered\r\n");
   return (0);
 }

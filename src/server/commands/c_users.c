@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:27:44 2016 toozs-_c
-** Last update Fri May 27 16:27:00 2016 toozs-_c
+** Last update Sat May 28 17:59:43 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -15,15 +15,16 @@
 ** USER
 **
 ** ----- CODES -----
-** -> RPL_USERSSTART
-** -> RPL_NOUSERS
-** -> RPL_USERS
-** -> RPL_ENDOFUSERS
+** -> 392 RPL_USERSSTART: 
+** -> 395 RPL_NOUSERS
+** -> 393 RPL_USERS
+** -> 394 RPL_ENDOFUSERS
 */
 
-int		_users(t_client *client, char **tab)
+int		_users(t_client *cl, char **tab, t_client *clients)
 {
-  (void)client;
+  (void)clients;
+  (void)cl;
   (void)tab;
   printf("Join command\n");
   return (0);

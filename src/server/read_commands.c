@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 14:57:26 2016 toozs-_c
-** Last update Fri May 27 11:46:57 2016 toozs-_c
+** Last update Sat May 28 20:30:35 2016 toozs-_c
 */
 
 #include <string.h>
@@ -17,7 +17,7 @@ static t_com g_coms[] =
     {"NICK", &_nick},
     {"USER", &_user},
     {"QUIT", &_quit},
-    /* {"/join", &_join}, */
+    {"JOIN", &_join},
     /* {"/part", &_part}, */
     /* {"/users", &_users}, */
     /* {"/names", &_names}, */
@@ -25,7 +25,7 @@ static t_com g_coms[] =
     {NULL, NULL}
   };
 
-int		check_commands(t_client *params, char **tab)
+int		check_commands(t_client *params, char **tab, t_client *clients)
 {
   int		i;
   int		ret;
@@ -36,7 +36,7 @@ int		check_commands(t_client *params, char **tab)
          && strcmp(g_coms[i].command, tab[0]) != 0)
     i++;
   if (g_coms[i].command != NULL)
-    ret = g_coms[i].ptr(params, tab);
+    ret = g_coms[i].ptr(params, tab, clients);
   else
     return (1);
   /* if (ret == 1) */
@@ -52,6 +52,7 @@ void		send_message(char *buff, t_client *param, t_client *clients)
     {
       if (clients != param)
       write(clients->fd, buff, strlen(buff));
+      write(clients->fd, "\r\n", 2);
       clients = clients->next;
     }
 }
@@ -66,7 +67,7 @@ int		read_input(char *buff, t_client *params, t_client *clients)
   if (tab && tab[0])
     {
       printf("here\n");
-      if ((ret = check_commands(params, tab)) != 1)
+      if ((ret = check_commands(params, tab, clients)) != 1)
 	return (ret);
       else
 	send_message(buff, params, clients);
