@@ -5,11 +5,12 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:27:26 2016 toozs-_c
-** Last update Sun May 29 16:02:12 2016 toozs-_c
+** Last update Mon May 30 14:31:13 2016 toozs-_c
 */
 
 #include <stdio.h>
 #include "server.h"
+#include "my.h"
 
 /* ----- PART -----
 ** part <channel>{,<channel>}
@@ -29,44 +30,43 @@ int		is_in_channel(t_client *cl, char *chan)
     {
       if (!my_strcmp(chan, tmp->name))
 	{
-	  ch_remove_node(&cl->channels, tmp);
+	  ch_remove_node(&cl->channels, &tmp);
 	  return (1);
 	}
-      tmp = tmp->next;
+      if (tmp)
+	tmp = tmp->next;
     }
   return (0);
 }
 
-int		leave_channel(t_client *cl, char *chan, t_client *clients)
+int		leave_channel(t_client *cl, char *ch_name, t_client *clients,
+			      t_channel **chans)
 {
   t_channel	*tmp;
 
-  if (!is_in_channel())
+  (void)clients;
+  if (!is_in_channel(cl, ch_name))
     {
-      while (clients != NULL)
+      tmp = (*chans);
+      while (tmp != NULL)
 	{
-	  tmp = clients->channels;
-	  while (tmp != NULL)
+	  if (!my_strcmp(ch_name, tmp->name))
 	    {
-	      if (!my_strcmp(chan, tmp->name))
-		{
-		  dprintf(cl->fd, "442 Not on channel %s\r\n", chan);
-		  return (1);
-		}
-	      tmp = tmp->next;  
+	      dprintf(cl->fd, "442 Not on channel %s\r\n", ch_name);
+	      return (1);
 	    }
-	  clients = clients->next;
+	  tmp = tmp->next;
 	}
-      dprintf(cl->fd, "403 No such channel %s\r\n", chan);
+      dprintf(cl->fd, "403 No such channel %s\r\n", ch_name);
       return (1);
     }
   return (0);
 }
 
-int		_part(t_client *cl, char **tab, t_client *clients)
+int		_part(t_client *cl, char **tab, t_client *clients,
+		      t_channel **chans)
 {
   int		i;
-  int		ret;
 
   printf("Part command\n");
   i = 1;
@@ -81,9 +81,12 @@ int		_part(t_client *cl, char **tab, t_client *clients)
 	  i = 1;
 	  while (tab[i])
 	    {
-	      leave_channel(cl, tab[i], clients);
+	      leave_channel(cl, tab[i], clients, chans);
+	      dprintf(cl->fd, ":%s PART %s\r\n", cl->name, tab[i]);
+	      i++;
 	    }
         }
+      return (0);
     }
-  return (0);
+  return (2);
 }

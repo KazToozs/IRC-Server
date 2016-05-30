@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:27:06 2016 toozs-_c
-** Last update Sat May 28 21:42:04 2016 toozs-_c
+** Last update Mon May 30 14:25:40 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -22,12 +22,15 @@
 ** 436 ERR_NICKCOLLISION: ?
 */
 
-int		_nick(t_client *cl, char **tab, t_client *clients)
+int		_nick(t_client *cl, char **tab, t_client *clients,
+		      t_channel **chans)
 {
   t_client	*tmp;
 
   printf("nick command\n");
   tmp = cl;
+  (void)chans;
+  (void)clients;
   if (tab[1])
     {
       while (cl->prev != NULL)

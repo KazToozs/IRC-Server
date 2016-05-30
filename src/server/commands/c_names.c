@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:26:46 2016 toozs-_c
-** Last update Sat May 28 17:56:54 2016 toozs-_c
+** Last update Mon May 30 14:21:53 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -19,12 +19,15 @@
 ** -> 366 RPL_ENDOFNAMES: end of the list
 */
 
-int		_names(t_client *cl, char **tab, t_client *clients)
+int		_names(t_client *cl, char **tab, t_client *clients,
+		       t_channel **chans)
 {
   int		i;
 
   printf("names command\n");
   i = 1;
+  (void)chans;
+  (void)clients;
   if (cl->registered)
     {
       while (tab[i])

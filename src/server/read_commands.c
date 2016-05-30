@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 14:57:26 2016 toozs-_c
-** Last update Sat May 28 20:30:35 2016 toozs-_c
+** Last update Mon May 30 16:00:10 2016 toozs-_c
 */
 
 #include <string.h>
@@ -18,14 +18,15 @@ static t_com g_coms[] =
     {"USER", &_user},
     {"QUIT", &_quit},
     {"JOIN", &_join},
-    /* {"/part", &_part}, */
-    /* {"/users", &_users}, */
+    {"PART", &_part},
+    {"LIST", &_list},
     /* {"/names", &_names}, */
     /* {"/msg", &_msg}, */
     {NULL, NULL}
   };
 
-int		check_commands(t_client *params, char **tab, t_client *clients)
+int		check_commands(t_client *params, char **tab, t_client *clients,
+			       t_channel **chans)
 {
   int		i;
   int		ret;
@@ -36,11 +37,11 @@ int		check_commands(t_client *params, char **tab, t_client *clients)
          && strcmp(g_coms[i].command, tab[0]) != 0)
     i++;
   if (g_coms[i].command != NULL)
-    ret = g_coms[i].ptr(params, tab, clients);
+    ret = g_coms[i].ptr(params, tab, clients, chans);
   else
     return (1);
-  /* if (ret == 1) */
-  /*   send_message(); */
+  if (ret == 2)
+    dprintf(params->fd, "451 Not registered\r\n");
   if (ret == 3)
     return (ret);
   return (0);
@@ -48,6 +49,7 @@ int		check_commands(t_client *params, char **tab, t_client *clients)
 
 void		send_message(char *buff, t_client *param, t_client *clients)
 {
+  /* not needed ? */
   while (clients != NULL)
     {
       if (clients != param)
@@ -57,7 +59,8 @@ void		send_message(char *buff, t_client *param, t_client *clients)
     }
 }
 
-int		read_input(char *buff, t_client *params, t_client *clients)
+int		read_input(char *buff, t_client *params, t_client *clients,
+			   t_channel **chans)
 {
   char		**tab;
   int		ret;
@@ -67,10 +70,11 @@ int		read_input(char *buff, t_client *params, t_client *clients)
   if (tab && tab[0])
     {
       printf("here\n");
-      if ((ret = check_commands(params, tab, clients)) != 1)
+      if ((ret = check_commands(params, tab, clients, chans)) != 1)
 	return (ret);
       else
-	send_message(buff, params, clients);
+	/* send_message(buff, params, clients);// */
+	dprintf(params->fd, "421 Unknown command\r\n");
     }
   free_tab(tab);
   return (0);

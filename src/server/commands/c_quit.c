@@ -5,15 +5,17 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Thu May 26 11:03:09 2016 toozs-_c
-** Last update Sat May 28 17:58:23 2016 toozs-_c
+** Last update Mon May 30 14:28:20 2016 toozs-_c
 */
 
 #include "server.h"
 
-int		_quit(t_client *cl, char **tab, t_client *clients)
+int		_quit(t_client *cl, char **tab, t_client *clients,
+		      t_channel **chans)
 {
   (void)clients;
   (void)cl;
   (void)tab;
+  (void)chans;
   return (3);
 }

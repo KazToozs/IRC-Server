@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Wed May 18 11:11:21 2016 toozs-_c
-** Last update Thu May 26 20:24:36 2016 toozs-_c
+** Last update Mon May 30 14:18:16 2016 toozs-_c
 */
 
 #include <sys/types.h>
@@ -55,13 +55,15 @@ void			server_loop(int sock_fd)
 {
   struct timeval	tv;
   t_client		*clients;
+  t_channel		*chans;
 
   clients = NULL;
+  chans = NULL;
   while (42)
     {
       tv.tv_sec = 0;
       tv.tv_usec = 300;
-      handle_clients(sock_fd, &tv, &clients);
+      handle_clients(sock_fd, &tv, &clients, &chans);
     }
 }
 

@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Thu May 26 19:02:27 2016 toozs-_c
-** Last update Fri May 27 11:50:32 2016 toozs-_c
+** Last update Mon May 30 15:03:09 2016 toozs-_c
 */
 
 #include <strings.h>
@@ -15,7 +15,7 @@
 #include "server.h"
 
 t_client		*find_commands(char *buff, t_client *tmp,
-				       t_client **clients)
+				       t_client **clients, t_channel **chans)
 {
   int			n;
   int			br;
@@ -32,7 +32,7 @@ t_client		*find_commands(char *buff, t_client *tmp,
 	  n++;
 	  /* if (buff[n] == '\n') */
 	  /*   n++; */
-	  if (read_input(new, tmp, *clients) == 3)
+	  if (read_input(new, tmp, *clients, chans) == 3)
 	    {
 	      list_remove_node(clients, &tmp);
 	      br = 1;
@@ -44,7 +44,8 @@ t_client		*find_commands(char *buff, t_client *tmp,
   return (tmp);
 }
 
-int                     check_client_event(t_client **clients, fd_set *readfds)
+int                     check_client_event(t_client **clients, fd_set *readfds,
+					   t_channel **chans)
 {
   t_client              *tmp;
   char                  buff[4096];
@@ -65,9 +66,10 @@ int                     check_client_event(t_client **clients, fd_set *readfds)
 	      list_remove_node(clients, &tmp);
 	    }
 	  buff[ret] = 0;
-	  printf("client %d RECEIVED: [%s]\n", i++, buff);
-	  tmp = find_commands(buff, tmp, clients);
+	  printf("client %d RECEIVED: [%s]\n", i, buff);
+	  tmp = find_commands(buff, tmp, clients, chans);
 	}
+      i++;
       if (tmp)
 	tmp = tmp->next;
     }
@@ -108,7 +110,7 @@ void			count_list(t_client *clients)
 }
 
 void			handle_clients(int sock_fd, struct timeval *tv,
-				       t_client **clients)
+				       t_client **clients, t_channel **chans)
 {
   int			nfds;
   fd_set		readfds;
@@ -129,10 +131,10 @@ void			handle_clients(int sock_fd, struct timeval *tv,
 				  &s_in_size)) != -1)
 	    {
 	      list_push_back(clients, client_fd);
-	      count_list(*clients);
+	      count_list(*clients);//
 	      printf("added a client\n");
 	    }
 	}
-      check_client_event(clients, &readfds);
+      check_client_event(clients, &readfds, chans);
     }
 }

@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 17:43:24 2016 toozs-_c
-** Last update Sat May 28 17:59:18 2016 toozs-_c
+** Last update Mon May 30 14:27:58 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -19,12 +19,15 @@
 ** -> 462 ERR_ALREADYREGISTERED: already logged in?
 */
 
-int		_user(t_client *cl, char **tab, t_client *clients)
+int		_user(t_client *cl, char **tab, t_client *clients,
+		      t_channel **chans)
 {
   int		i;
   printf("User command\n");
 
   i = 1;
+  (void)chans;
+  (void)clients;
   if (!cl->registered && cl->name)
     {
       while (tab[i])
