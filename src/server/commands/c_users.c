@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:27:44 2016 toozs-_c
-** Last update Mon May 30 14:27:19 2016 toozs-_c
+** Last update Mon May 30 17:50:34 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -24,10 +24,22 @@
 int		_users(t_client *cl, char **tab, t_client *clients,
 		       t_channel **chans)
 {
-  (void)clients;
-  (void)cl;
+  t_client	*tmp;
+
   (void)tab;
   (void)chans;
   printf("Join command\n");
-  return (0);
+  if (cl->registered)
+    {
+      tmp = clients;
+      dprintf(cl->fd, "392 :Users start\r\n");
+      while (tmp != NULL)
+	{
+	  dprintf(cl->fd, "393 %s :Users\r\n", tmp->name);
+	  tmp = tmp->next;
+	}
+      dprintf(cl->fd, "394 :Users end\r\n");
+      return (0);
+    }
+  return (2);
 }

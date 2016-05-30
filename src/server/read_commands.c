@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 14:57:26 2016 toozs-_c
-** Last update Mon May 30 16:00:10 2016 toozs-_c
+** Last update Mon May 30 17:20:33 2016 toozs-_c
 */
 
 #include <string.h>
@@ -20,8 +20,9 @@ static t_com g_coms[] =
     {"JOIN", &_join},
     {"PART", &_part},
     {"LIST", &_list},
-    /* {"/names", &_names}, */
-    /* {"/msg", &_msg}, */
+    {"PRIVMSG", &_privmsg},
+    {"USERS", &_users},
+    {"NAMES", &_names},
     {NULL, NULL}
   };
 
