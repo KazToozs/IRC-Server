@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:27:06 2016 toozs-_c
-** Last update Mon May 30 14:25:40 2016 toozs-_c
+** Last update Thu Jun  2 16:31:06 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -22,31 +22,36 @@
 ** 436 ERR_NICKCOLLISION: ?
 */
 
-int		_nick(t_client *cl, char **tab, t_client *clients,
-		      t_channel **chans)
+int		has_nick(t_client *cl, char *nick)
 {
   t_client	*tmp;
 
-  printf("nick command\n");
   tmp = cl;
+  while (cl->prev != NULL)
+    cl = cl->prev;
+  while (cl != NULL)
+    {
+      if (my_strcmp(cl->name, nick) == 0)
+	{
+	  dprintf(cl->fd, "433 Nickname already in use\r\n");
+	  return (1);
+	}
+      cl = cl->next;
+    }
+  cl = tmp;
+  cl->name = my_strdup(nick);
+  return (0);
+}
+
+int		_nick(t_client *cl, char **tab, t_client *clients,
+		      t_channel **chans)
+{
+  printf("nick command\n");
   (void)chans;
   (void)clients;
   if (tab[1])
     {
-      while (cl->prev != NULL)
-	cl = cl->prev;
-      while (cl != NULL)
-	{
-	  if (my_strcmp(cl->name, tab[1]) == 0)
-	    {
-	      dprintf(cl->fd, "433 Nickname already in use\r\n");
-	      return (1);
-	    }
-	  cl = cl->next;
-	}
-	  /* dprintf(client->fd, "NICK ok ?\r\n"); */
-      cl = tmp;
-      cl->name = my_strdup(tab[1]);
+      has_nick(cl, tab[1]);
     }
   else
     {

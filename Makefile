@@ -22,7 +22,7 @@ SRCSER	=	src/server/server.c		\
 		src/server/commands/c_quit.c	\
 		src/server/main.c
 
-SRCCLI	=	
+SRCCLI	=	src/client/main.c
 
 OBJSER	=	$(SRCSER:.c=.o)
 

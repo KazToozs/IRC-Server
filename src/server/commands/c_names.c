@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:26:46 2016 toozs-_c
-** Last update Mon May 30 17:51:30 2016 toozs-_c
+** Last update Thu Jun  2 16:27:03 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -83,7 +83,7 @@ void		print_all_names(t_client *cl, t_client *clients)
       tmp = clients;
       while (tmp != NULL)
 	{
-	  cli_chans = tmp->channels;;
+	  cli_chans = tmp->channels;
 	  while (cli_chans != NULL && found == 0)
 	    {
 	      if (!my_strcmp(cli_chans->name, chans->name))
@@ -117,7 +117,6 @@ int		_names(t_client *cl, char **tab, t_client *clients,
 	}
       else
 	{
-	  /* printf("list nicknames of users in all channels visible to clien\n"); */
 	  print_all_names(cl, clients);
 	  dprintf(cl->fd, "366 %s * :End\r\n", cl->name);
 	}

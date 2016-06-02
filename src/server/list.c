@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Thu May 19 18:06:47 2016 toozs-_c
-** Last update Sat May 28 21:46:31 2016 toozs-_c
+** Last update Thu Jun  2 16:17:14 2016 toozs-_c
 */
 
 #include <stdlib.h>
@@ -24,7 +24,6 @@ int		list_push_back(t_client **list, int fd)
   block->registered = 0;
   block->name = NULL;
   block->channels = NULL;
-  /* ch_push_back(&block->channels, "#default"); */
   if ((*list) == NULL)
     {
       block->prev = NULL;

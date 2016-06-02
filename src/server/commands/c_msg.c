@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:26:28 2016 toozs-_c
-** Last update Mon May 30 16:37:17 2016 toozs-_c
+** Last update Thu Jun  2 16:20:52 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -24,7 +24,7 @@
 */
 
 void		send_to_channel(char *chan_name, char *msg,
-				t_client *clients)
+				t_client *clients, t_client *cl)
 {
   t_client	*tmp;
   t_channel	*chan;
@@ -33,23 +33,26 @@ void		send_to_channel(char *chan_name, char *msg,
   tmp = clients;
   while (tmp != NULL)
     {
-      chan = tmp->channels;
-      chan_found = 0;
-      while (chan != NULL && chan_found == 0)
+      if (tmp != cl)
 	{
-	  if (!my_strcmp(chan->name, chan_name))
+	  chan = tmp->channels;
+	  chan_found = 0;
+	  while (chan != NULL && chan_found == 0)
 	    {
-	      dprintf(tmp->fd, "%s\r\n", msg);
-	      chan_found = 1;
+	      if (!my_strcmp(chan->name, chan_name))
+		{
+		  dprintf(tmp->fd, ":%s %s\r\n", cl->name, msg);
+		  chan_found = 1;
+		}
+	      chan = chan->next;
 	    }
-	  chan = chan->next;
 	}
       tmp = tmp->next;
     }
 }
 
 int		check_channels(t_channel **chan, char **tab,
-			       t_client *clients)
+			       t_client *clients, t_client *cl)
 {
   t_channel	*tmp;
 
@@ -58,7 +61,7 @@ int		check_channels(t_channel **chan, char **tab,
     {
       if (!my_strcmp(tab[1], tmp->name))
 	{
-	  send_to_channel(tab[1], tab[2], clients);
+	  send_to_channel(tab[1], tab[2], clients, cl);
 	  return (0);
 	}
       tmp = tmp->next;
@@ -66,7 +69,7 @@ int		check_channels(t_channel **chan, char **tab,
   return (1);
 }
 
-int		check_nicknames(char *nickname, char *msg, t_client *clients)
+ int		check_nicknames(char *nickname, char *msg, t_client *clients)
 {
   t_client	*tmp;
 
@@ -92,21 +95,20 @@ int		_privmsg(t_client *cl, char **tab, t_client *clients,
   i = 1;
   if (cl->registered)
     {
-      while (tab[i])
-	i++;
+      while (tab[i++]);
       if (i < 2)
 	dprintf(cl->fd, "411 No recipient given\r\n");
       else if (i < 3)
 	dprintf(cl->fd, "412 No text to send\r\n");
       else
 	{
-	  if (check_channels(chans, tab, clients))
+	  if (check_channels(chans, tab, clients, cl))
 	    {
 	      if (check_nicknames(tab[1], tab[2], clients))
 		{
 		  dprintf(cl->fd, "401 No nick or channel\r\n");
 		  return (1);
-		}	      
+		}
 	    }
 	}
       return (0);

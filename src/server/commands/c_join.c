@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:21:39 2016 toozs-_c
-** Last update Mon May 30 13:20:06 2016 toozs-_c
+** Last update Thu Jun  2 16:20:13 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -35,7 +35,6 @@ void		print_join(t_client *cl, char *chan)
 	  chan);
   dprintf(cl->fd, ":%s 353 %s @ %s :%s", "127.0.0.1",
 	  cl->name, chan, cl->name);
-  /* print_name(tmp->fd, tmp, tmp->cmd.args); */
   dprintf(cl->fd, "\r\n:%s 366 %s :End of /NAMES list.\r\n",
 	  "127.0.0.1" , chan);
 }
@@ -74,8 +73,7 @@ int		_join(t_client *cl, char **tab, t_client *clients,
   i = 1;
   if (cl->registered)
     {
-      while (tab[i])
-	i++;
+      while (tab[i++]);
       if (i < 2)
 	dprintf(cl->fd, "461 Too few params\r\n");
       else
