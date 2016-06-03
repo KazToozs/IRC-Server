@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:26:28 2016 toozs-_c
-** Last update Thu Jun  2 16:20:52 2016 toozs-_c
+** Last update Fri Jun  3 19:06:55 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -41,7 +41,8 @@ void		send_to_channel(char *chan_name, char *msg,
 	    {
 	      if (!my_strcmp(chan->name, chan_name))
 		{
-		  dprintf(tmp->fd, ":%s %s\r\n", cl->name, msg);
+		  dprintf(tmp->fd, ":%s PRIVMSG %s :%s\r\n",
+			  cl->name, chan_name, msg);
 		  chan_found = 1;
 		}
 	      chan = chan->next;
@@ -69,16 +70,18 @@ int		check_channels(t_channel **chan, char **tab,
   return (1);
 }
 
- int		check_nicknames(char *nickname, char *msg, t_client *clients)
+int		check_nicknames(char *nickname, char *msg, t_client *clients,
+				t_client *cl)
 {
   t_client	*tmp;
 
   tmp = clients;
   while (tmp != NULL)
     {
+      printf("tmp->name: %s , nickname: %s", tmp->name, nickname);
       if (!my_strcmp(tmp->name, nickname))
 	{
-	  dprintf(tmp->fd, "%s\r\n", msg);
+	  dprintf(tmp->fd, ":%s PRIVMSG %s :%s\r\n", cl->name, nickname, msg);
 	  return (0);
 	}
       tmp = tmp->next;
@@ -104,7 +107,7 @@ int		_privmsg(t_client *cl, char **tab, t_client *clients,
 	{
 	  if (check_channels(chans, tab, clients, cl))
 	    {
-	      if (check_nicknames(tab[1], tab[2], clients))
+	      if (check_nicknames(tab[1], tab[2], clients, cl))
 		{
 		  dprintf(cl->fd, "401 No nick or channel\r\n");
 		  return (1);

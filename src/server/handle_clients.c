@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Thu May 26 19:02:27 2016 toozs-_c
-** Last update Thu Jun  2 16:18:54 2016 toozs-_c
+** Last update Fri Jun  3 19:10:37 2016 toozs-_c
 */
 
 #include <strings.h>
@@ -47,9 +47,11 @@ int                     check_client_event(t_client **clients, fd_set *readfds,
 {
   t_client              *tmp;
   char                  buff[4096];
+  int			i;
   int			ret;
 
   tmp = *clients;
+  i = 0;
   ret = 0;
   while (tmp != NULL)
     {

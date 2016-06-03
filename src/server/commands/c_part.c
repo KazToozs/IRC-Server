@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:27:26 2016 toozs-_c
-** Last update Mon May 30 14:31:13 2016 toozs-_c
+** Last update Fri Jun  3 19:11:21 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -20,6 +20,19 @@
 ** -> 442 ERR_NOTONCHANNEL
 ** -> 403 ERR_NOSUCHCHANNEL
 */
+
+void            print_part_to_clients(t_client *cl, char *chan,
+                                      t_client *clients)
+{
+  while (clients != NULL)
+    {
+      if (clients != cl)
+        {
+          dprintf(clients->fd, ":%s PART %s\r\n", cl->name, chan);
+        }
+      clients = clients->next;
+    }
+}
 
 int		is_in_channel(t_client *cl, char *chan)
 {
@@ -72,8 +85,7 @@ int		_part(t_client *cl, char **tab, t_client *clients,
   i = 1;
   if (cl->registered)
     {
-      while (tab[i])
-	i++;
+      while (tab[i++]);
       if (i < 2)
         dprintf(cl->fd, "461 Too few params\r\n");
       else
@@ -81,8 +93,11 @@ int		_part(t_client *cl, char **tab, t_client *clients,
 	  i = 1;
 	  while (tab[i])
 	    {
-	      leave_channel(cl, tab[i], clients, chans);
-	      dprintf(cl->fd, ":%s PART %s\r\n", cl->name, tab[i]);
+	      if (!leave_channel(cl, tab[i], clients, chans))
+		{
+		  dprintf(cl->fd, ":%s PART %s\r\n", cl->name, tab[i]);
+		  print_part_to_clients(cl, tab[i], clients);
+		}
 	      i++;
 	    }
         }

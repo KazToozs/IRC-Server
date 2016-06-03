@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:27:06 2016 toozs-_c
-** Last update Thu Jun  2 16:31:06 2016 toozs-_c
+** Last update Fri Jun  3 18:39:25 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -22,7 +22,20 @@
 ** 436 ERR_NICKCOLLISION: ?
 */
 
-int		has_nick(t_client *cl, char *nick)
+void		print_nick_to_clients(t_client *cl, char *newname,
+				      t_client *clients)
+{
+  while (clients != NULL)
+    {
+      if (clients != cl)
+        {
+          dprintf(clients->fd, ":%s NICK :%s\r\n", cl->name, newname);
+        }
+      clients = clients->next;
+    }
+}
+
+int		has_nick(t_client *cl, char *nick, t_client *clients)
 {
   t_client	*tmp;
 
@@ -39,6 +52,8 @@ int		has_nick(t_client *cl, char *nick)
       cl = cl->next;
     }
   cl = tmp;
+  dprintf(cl->fd, ":%s NICK :%s\r\n", cl->name, nick);
+  print_nick_to_clients(cl, nick, clients);
   cl->name = my_strdup(nick);
   return (0);
 }
@@ -51,7 +66,7 @@ int		_nick(t_client *cl, char **tab, t_client *clients,
   (void)clients;
   if (tab[1])
     {
-      has_nick(cl, tab[1]);
+      has_nick(cl, tab[1], clients);
     }
   else
     {

@@ -5,7 +5,7 @@
 ** Login   <toozs-_c@epitech.net>
 ** 
 ** Started on  Mon May 23 15:21:39 2016 toozs-_c
-** Last update Thu Jun  2 16:20:13 2016 toozs-_c
+** Last update Fri Jun  3 18:36:20 2016 toozs-_c
 */
 
 #include <stdio.h>
@@ -27,7 +27,20 @@
 ** ERR_TOOMANYCHANNELS
 */
 
-void		print_join(t_client *cl, char *chan)
+void		print_join_to_clients(t_client *cl, char *chan,
+				      t_client *clients)
+{
+  while (clients != NULL)
+    {
+      if (clients != cl)
+	{
+	  dprintf(clients->fd, ":%s JOIN %s\r\n", cl->name, chan);
+	}
+      clients = clients->next;
+    }
+}
+
+void		print_join(t_client *cl, char *chan, t_client *clients)
 {
   dprintf(cl->fd, ":%s JOIN %s\r\n", cl->name, chan);
   dprintf(cl->fd, ":%s 332 %s %s :%s%s\r\n", "127.0.0.1",
@@ -37,6 +50,7 @@ void		print_join(t_client *cl, char *chan)
 	  cl->name, chan, cl->name);
   dprintf(cl->fd, "\r\n:%s 366 %s :End of /NAMES list.\r\n",
 	  "127.0.0.1" , chan);
+  print_join_to_clients(cl, chan, clients);
 }
 
 int		add_channel(t_client *cl, char *chan, t_client *clients,
@@ -52,7 +66,7 @@ int		add_channel(t_client *cl, char *chan, t_client *clients,
 	  if (!my_strcmp(chan, tmp->name))
 	    {
 	      ch_push_back(&cl->channels, chan);
-	      print_join(cl, chan);
+	      print_join(cl, chan, clients);
 	      return (0);
 	    }
 	  tmp = tmp->next;
@@ -84,7 +98,7 @@ int		_join(t_client *cl, char **tab, t_client *clients,
 	      if (add_channel(cl, tab[i], clients, chans))
 		{
 		  dprintf(cl->fd, "403 Channel doesn't exist, creating.\r\n");
-		  print_join(cl, tab[i]);
+		  print_join(cl, tab[i], clients);
 		}
 	      i++;
 	    }
